@@ -1,4 +1,4 @@
-Shader "Custom/Phong"
+Shader "Custom/PhongTexture"
 {
     Properties // Parámetros recibidos desde Unity
     {
@@ -54,7 +54,7 @@ Shader "Custom/Phong"
             {
                 vOutput result;
                 result.vertexPos = UnityObjectToClipPos(input.vertexPos);
-                result.normal = input.normal;
+                result.normal = UnityObjectToWorldNormal(input.normal);
                 result.vertexLocal = input.vertexPos;
                 result.coord = input.coord;
                 return result;
@@ -106,10 +106,10 @@ Shader "Custom/Phong"
                 // 2. Las coordenadas específicas del color que nos concierne aquí
                 // return tex2D(_texture, input.coord.xy);
                 
-                return phong;
+                // return phong;
 
                 // Juntar phong con textura
-                // return phong * tex2D(_texture, input.coord.xy);
+                return phong * tex2D(_texture, input.coord.xy);
             }
 
             ENDCG

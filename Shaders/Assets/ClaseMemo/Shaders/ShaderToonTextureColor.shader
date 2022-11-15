@@ -1,4 +1,4 @@
-Shader "Custom/Phong"
+Shader "Custom/ShaderToonTextureColor"
 {
     Properties // Parámetros recibidos desde Unity
     {
@@ -54,7 +54,7 @@ Shader "Custom/Phong"
             {
                 vOutput result;
                 result.vertexPos = UnityObjectToClipPos(input.vertexPos);
-                result.normal = input.normal;
+                result.normal = UnityObjectToWorldNormal(input.normal);
                 result.vertexLocal = input.vertexPos;
                 result.coord = input.coord;
                 return result;
@@ -68,20 +68,20 @@ Shader "Custom/Phong"
 
 
                 // difuso
-                // kd(l . n)id = material difuso(vector que apunta hacia la luz . normal)luz
+                // kd(l . n)id = material difuso(vector que apunta hacia la luz . )luz
                 float4 kd = _diffuseMaterial * _LightColor0 * max(0, dot(_WorldSpaceLightPos0.xyz, input.normal));
                 float4 id = _LightColor0;
 
                 // NOTA IMPORTANTE
                 // LAS OPERACIONES DEBEN SER REALIZADAS EN EL MISMO ESPACIO (LOCAL, GLOBAL, ETC)
                 // l = vector que apunta hacia la luz (en el espacio del mundo)
-                float3 l = normalize(_WorldSpaceLightPos0.xyz - input.vertexPos.xyz);
+                float3 l = normalize(_WorldSpaceLightPos0.xyz);
 
                 // n = vector normal (la normal de todos los vértices está en el espacio local)
                 float3 n = UnityObjectToWorldNormal(input.normal);
 
                 // Prodcuto punto A . B = |A| * |B| * cos(ángulo entre A y B)
-                float4 diffuse = kd * max(0.0, dot(l, n)) * id;
+                float4 diffuse = kd * max(0, dot(l, n)) * id;
 
 
                 // especular
@@ -98,18 +98,33 @@ Shader "Custom/Phong"
                 float a = _brightness;
                 float4 specular = ks * is * pow(max(dot(r, v), 0), a);
 
-                float4 phong = environmental + diffuse + specular;
 
-                // TEXTURA
-                // Se necesitan 2 fuentes
-                // 1. El sampler que es la textura completa
-                // 2. Las coordenadas específicas del color que nos concierne aquí
-                // return tex2D(_texture, input.coord.xy);
-                
-                return phong;
+                float4 phong = (environmental + diffuse + specular) * tex2D(_texture, input.coord);
 
-                // Juntar phong con textura
-                // return phong * tex2D(_texture, input.coord.xy);
+
+                // Transformar to shader toon
+                float4 levelOne = tex2D(_texture, input.coord);
+                float4 levelTwo = tex2D(_texture, input.coord) * 0.5;
+                float4 levelThree = tex2D(_texture, input.coord) * 0.1;
+
+
+                float red = phong.r;
+                float green = phong.g;
+                float blue = phong.b;
+
+                float newColor = (red + green + blue) / 3;
+
+                float4 toonColor = float4(0, 0, 0, 1);
+
+                if (newColor < 0.05f) {
+                    toonColor = levelThree;
+                } else if (newColor < 0.1f) {
+                    toonColor = levelTwo;
+                } else {
+                    toonColor = levelOne;
+                }
+
+                return toonColor;
             }
 
             ENDCG

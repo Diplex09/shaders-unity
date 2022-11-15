@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Phong
-  m_Shader: {fileID: 4800000, guid: a3da01f93cd7a35468403a89c8579986, type: 3}
+  m_Name: MAT_ShaderToonTextureColor
+  m_Shader: {fileID: 4800000, guid: e49177291d34edd4fa0f169511cdd417, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -56,10 +56,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _mainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _texture:
         m_Texture: {fileID: 2800000, guid: 15c493da00162834c92bc41f78a050fa, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -82,14 +78,10 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _brightness: 22.1
     - _environmentalAttenuation: 0.2
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _color: {r: 1, g: 1, b: 1, a: 1}
-    - _diffuseMaterial: {r: 0.8679245, g: 0.10971874, b: 0.10971874, a: 1}
-    - _diffuseaterial: {r: 1, g: 1, b: 1, a: 1}
-    - _environmentalMaterial: {r: 0.8679245, g: 0.17208412, b: 0.08515483, a: 1}
-    - _specularMaterial: {r: 1, g: 1, b: 1, a: 1}
+    - _diffuseMaterial: {r: 1, g: 1, b: 1, a: 1}
+    - _environmentalMaterial: {r: 0.08805023, g: 0.8301887, b: 0, a: 1}
   m_BuildTextureStacks: []
