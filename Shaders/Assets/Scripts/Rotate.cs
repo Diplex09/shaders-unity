@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Rotate : MonoBehaviour
 {
-    [SerializeField] private float _speed = 5f;
+    [SerializeField] private int _speed = 5;
+    [SerializeField] private int _speedLevel = 1;
     [SerializeField] private bool _isRotating = true;
     [SerializeField] private bool _isClockwise = true;
     [SerializeField] private Vector3 _initialRotation;
@@ -13,7 +14,6 @@ public class Rotate : MonoBehaviour
     {
         // Save the actual rotation vector of the object
         _initialRotation = transform.rotation.eulerAngles;
-        Debug.Log("Initial rotation: " + _initialRotation);
         _isRotating = false;
     }
 
@@ -33,6 +33,27 @@ public class Rotate : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             transform.rotation = Quaternion.Euler(_initialRotation);
+        }
+        // Change rotation speed
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            _speedLevel++;
+            if (_speedLevel > 2)
+            {
+                _speedLevel = 0;
+            }
+            switch (_speedLevel)
+            {
+                case 0:
+                    _speed = 3;
+                    break;
+                case 1:
+                    _speed = 5;
+                    break;
+                case 2:
+                    _speed = 7;
+                    break;
+            }
         }
 
         // Rotate the object
