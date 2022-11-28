@@ -17,6 +17,7 @@ public class MoveCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int lastSpeedValue = 4;
         // When movement is not automatic, move when the user presses the arrow keys
         if (!_isAutomatic) {
 
@@ -27,6 +28,7 @@ public class MoveCamera : MonoBehaviour
                         _positionIndex++;
                     } else {
                         _positionIndex = 0;
+                        lastSpeedValue = _speed;
                         _speed = 30;
                         _isReturning = true;
                     }
@@ -42,6 +44,7 @@ public class MoveCamera : MonoBehaviour
                         _positionIndex--;
                     } else {
                         _positionIndex = _positions.Length - 1;
+                        lastSpeedValue = _speed;
                         _speed = 30;
                         _isReturning = true;
                     }
@@ -55,7 +58,7 @@ public class MoveCamera : MonoBehaviour
             if (transform.position == _currentPosition) {
                 _isMoving = false;
                 if (_isReturning) {
-                    _speed = 4;
+                    _speed = lastSpeedValue;
                     _isReturning = false;
                 }
             } else {
